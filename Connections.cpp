@@ -4,8 +4,8 @@
 #include "Connections.hpp"
 
 // global equivalents
-std::vector<int> J1a;
-std::vector<std::vector<int>> J2a;
+//std::vector<int> J1a;
+//std::vector<std::vector<int>> J2a;
 
 static void WriteConnection(
     const std::vector<double>& XYZ1,
@@ -36,15 +36,19 @@ static void WriteConnection(
 void Connections(
     int I,
     int NW,
-    double G,
+    int G,
     const std::vector<double>& XYZ1,
     const std::vector<double>& XYZ2,
     const std::vector<double>& A,
     int S1,
     std::vector<std::vector<double>>& ELM,
+    std::vector<int>& J1a,
+    std::vector<std::vector<int>>& J2a,
     int &I1,
     int &I2)
 {
+
+
     // Ensure J arrays allocated
     if ((int)J1a.size() < NW + 5)
         J1a.resize(NW + 5, 0);

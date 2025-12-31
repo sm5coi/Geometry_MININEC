@@ -12,6 +12,7 @@ add_executable(Geometry_MININEC main.cpp
     Connections.cpp
     GeometryInput.cpp
     GeometryOutput.cpp
+    GeometryData.hpp
 )
 
 include(GNUInstallDirs)

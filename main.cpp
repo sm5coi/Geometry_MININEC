@@ -38,9 +38,9 @@ void FrequencyInput() {
     // TODO: Implement
 }
 
-double EnvironmentInput() {
+int EnvironmentInput() {
     // TODO: Implement
-    return 0.0;
+    return -1;
 }
 
 // void GeometryInput(double G) {
@@ -83,9 +83,7 @@ int main() {
     // std::cout << BSd << BSd << std::endl;
 
     FrequencyInput();
-    //double G = EnvironmentInput();
-
-    double G = -1.0;
+    int G = EnvironmentInput();
 
     GeometryData g = GeometryInput(G);
 
