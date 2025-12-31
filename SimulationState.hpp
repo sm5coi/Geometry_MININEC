@@ -11,14 +11,15 @@ struct SimulationState
 {
     int G = 1;  // Freespace G = 1; Ground Plane G = -1
     int FLG = 0;
-    int MS = 150;
-    int ML = 11;;
-    int MA = 8;
-    int MM = 6;
-    int MP = 50;
+    int MS = 150;   // Maximum number of segments (Pulses + 2 * Wires) = 150
+    int MW = 50;    // Maximum number of wires = 50
+    int ML = 11;;   // Maximum number of loads = 11
+    int MA = 8;     // Maximum order of S-paramer loads = 8
+    int MM = 6;     // Maximum number of media = 6
+    int MP = 50;    // Maximum number of pulses = 50
     double P = M_PI;
     double P0 = M_PI / 180.0;;
-    double G0 = 29.979221;
+    double G0 = 29.979221;  // Intrinsic impedance of free space divided by 2*pi
     std::string BSd = "********************";
     std:: string Os = "D";
     char CSd;
@@ -26,16 +27,3 @@ struct SimulationState
 
 #endif // SIMULATIONSTATE_HPP
 
-// // CONSTANTS / INITIALIZATION
-// MS = 150;
-// ML = 11;
-// MA = 8;
-// MM = 6;
-// MP = 50;
-
-// P = M_PI;
-// P0 = M_PI / 180.0;
-
-// BSd = "********************";
-// G0 = 29.979221;
-// Os = "D";

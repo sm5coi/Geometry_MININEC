@@ -31,24 +31,24 @@ std::vector<std::vector<int>> GeometryOutput(
                       << std::setw(8) << Y[I1] << "\t"
                       << std::setw(8) << Z[I1] << "\t"
                       << std::setw(8) << A[Wp[I]] << "\t"
-                      << std::setw(4) << Cp[I][0] << "\t"
                       << std::setw(4) << Cp[I][1] << "\t"
+                      << std::setw(4) << Cp[I][2] << "\t"
                       << std::setw(4) << I << "\n";
 
-            if (I == Na[K][1] ||
-                Na[K][0] == Na[K][1] ||
-                Cp[I][1] == 0)
+            if (I == Na[K][2] ||
+                Na[K][1] == Na[K][2] ||
+                Cp[I][2] == 0)
             {
                 K++;
             }
 
-            if (Cp[I][0] == 0)
-                Cp[I][0] = Wp[I];
-
             if (Cp[I][1] == 0)
                 Cp[I][1] = Wp[I];
 
-            if (!((K == NW) && (Na[K][0] == 0) && (Na[K][1] == 0)))
+            if (Cp[I][2] == 0)
+                Cp[I][2] = Wp[I];
+
+            if (!((K == NW) && (Na[K][1] == 0) && (Na[K][2] == 0)))
             {
                 if (!((I == N) && (K < NW)))
                     continue;
@@ -65,30 +65,30 @@ std::vector<std::vector<int>> GeometryOutput(
 
             std::cout << "  X      Y      Z    RADIUS\tEND 1\tEND 2\t NO.\n";
 
-            if (Na[K][0] != 0 || Na[K][1] != 0)
+            if (Na[K][1] != 0 || Na[K][2] != 0)
             {
                 std::cout << std::setw(8) << X[I1] << "\t"
                           << std::setw(8) << Y[I1] << "\t"
                           << std::setw(8) << Z[I1] << "\t"
                           << std::setw(8) << A[Wp[I]] << "\t"
-                          << std::setw(4) << Cp[I][0] << "\t"
                           << std::setw(4) << Cp[I][1] << "\t"
+                          << std::setw(4) << Cp[I][2] << "\t"
                           << std::setw(4) << I << "\n";
 
-                if (I == Na[K][1] ||
-                    Na[K][0] == Na[K][1] ||
-                    Cp[I][1] == 0)
+                if (I == Na[K][2] ||
+                    Na[K][1] == Na[K][2] ||
+                    Cp[I][2] == 0)
                 {
                     K++;
                 }
 
-                if (Cp[I][0] == 0)
-                    Cp[I][0] = Wp[I];
-
                 if (Cp[I][1] == 0)
                     Cp[I][1] = Wp[I];
 
-                if (!((K == NW) && (Na[K][0] == 0) && (Na[K][1] == 0)))
+                if (Cp[I][2] == 0)
+                    Cp[I][2] = Wp[I];
+
+                if (!((K == NW) && (Na[K][1] == 0) && (Na[K][2] == 0)))
                 {
                     if (!((I == N) && (K < NW)))
                         break;
