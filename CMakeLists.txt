@@ -13,6 +13,7 @@ add_executable(Geometry_MININEC main.cpp
     GeometryInput.cpp
     GeometryOutput.cpp
     GeometryData.hpp
+    SimulationState.hpp
 )
 
 include(GNUInstallDirs)

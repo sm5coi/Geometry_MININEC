@@ -4,8 +4,9 @@
 #include "GeometryInput.hpp"
 #include "GeometryOutput.hpp"
 #include "Connections.hpp"
+#include "SimulationState.hpp"
 
-int FLG;  // global (as in MATLAB)
+//int FLG;  // global (as in MATLAB)
 
 // === Helper function: ReadInfile ===
 void ReadInfile(std::ifstream &fid,
@@ -27,7 +28,7 @@ void ReadInfile(std::ifstream &fid,
 
 
 // === MAIN FUNCTION ===
-GeometryData GeometryInput( int G)
+GeometryData GeometryInput( SimulationState& S)
 {
     GeometryData g_;
 
@@ -82,7 +83,7 @@ GeometryData GeometryInput( int G)
         int I2 = 0;
 
         // 1184
-        Connections(I, g_.NW, G, XYZ1, XYZ2, g_.A, S1, g_.ELM, g_.J1a, g_.J2a, I1, I2);
+        Connections(I, g_.NW, S.G, XYZ1, XYZ2, g_.A, S1, g_.ELM, g_.J1a, g_.J2a, I1, I2);
 
         // direction cosines
         std::vector<double> XYZ3(3);
@@ -141,6 +142,7 @@ GeometryData GeometryInput( int G)
                 g_.Xa[I1idx] -= F3 * g_.CABG[II][0];                    // 1225
                 g_.Ya[I1idx] -= F3 * g_.CABG[II][1];                    // 1226
                 // 1227 IF (C%(N1,1)=-I THEN F3 = -F3
+                // if Cp(N1,1)== -I, F3 = -F3; end
                 g_.Za[I1idx] -= F3 * g_.CABG[II][2];                    // 1228
 
                 I3++;                                                   // 1229
@@ -155,35 +157,37 @@ GeometryData GeometryInput( int G)
                 g_.Za[I4] = XYZ1[2] + J*XYZ3[2]/S1;                     // 1235
             }
 
-            if (g_.Cp[g_.N][1] != 0) {
-                int II = std::abs(g_.Cp[g_.N][1]);
-                double F3 = (g_.Cp[g_.N][1] > 0 ? 1 : -1) * g_.Sa[II];
+            if (g_.Cp[g_.N][1] != 0) {                                  // 1237
+                int II = std::abs(g_.Cp[g_.N][1]);                      // 1238
+                double F3 = (g_.Cp[g_.N][1] > 0 ? 1 : -1) * g_.Sa[II];  // 1239
 
-                int I3x = I6 - 1;
-                g_.Xa[I6] = g_.Xa[I3x] + F3*g_.CABG[II][0];
-                g_.Ya[I6] = g_.Ya[I3x] + F3*g_.CABG[II][1];
-                g_.Za[I6] = g_.Za[I3x] + F3*g_.CABG[II][2];
+                int I3x = I6 - 1;                                       // 1240
+                g_.Xa[I6] = g_.Xa[I3x] + F3*g_.CABG[II][0];             // 1241
+                g_.Ya[I6] = g_.Ya[I3x] + F3*g_.CABG[II][1];             // 1242
+                // 1243 IF I=-C%(N,2) THEN F3=-F3
+                // if I == -Cp(N,2), F3 = -F3; end
+                g_.Za[I6] = g_.Za[I3x] + F3*g_.CABG[II][2];             // 1244
             }
         }
         else {
             // single segment  0 pulse case
-            int I1idx = N1 + 2*(I-1);
+            int I1idx = N1 + 2*(I-1);           // 1247
 
-            g_.Xa[I1idx]   = XYZ1[0];
-            g_.Ya[I1idx]   = XYZ1[1];
-            g_.Za[I1idx]   = XYZ1[2];
+            g_.Xa[I1idx]   = XYZ1[0];           // 1248
+            g_.Ya[I1idx]   = XYZ1[1];           // 1249
+            g_.Za[I1idx]   = XYZ1[2];           // 1250
 
-            g_.Xa[I1idx+1] = XYZ2[0];
-            g_.Ya[I1idx+1] = XYZ2[1];
-            g_.Za[I1idx+1] = XYZ2[2];
+            g_.Xa[I1idx+1] = XYZ2[0];           // 1252
+            g_.Ya[I1idx+1] = XYZ2[1];           // 1253
+            g_.Za[I1idx+1] = XYZ2[2];           // 1254
         }
 
     } // end FOR
 
-    // OUTPUT & other calls
+    //   GEOMETRY OUTPUT
     g_.Cp = GeometryOutput(g_.N, g_.Wp, g_.NW, g_.Na, g_.Xa, g_.Ya, g_.Za, g_.A, g_.Cp);
 
-    FLG = 0;
+    S.FLG = 99;
 
     return g_;
 }
