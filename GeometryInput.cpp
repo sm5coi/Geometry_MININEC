@@ -21,8 +21,8 @@ void ReadInfile(std::ifstream &fid,
     }
 
     S1 = static_cast<int>(L[0]);
-    XYZ1 = {L[1], L[2], L[3]};
-    XYZ2 = {L[4], L[5], L[6]};
+    XYZ1 = {0.0, L[1], L[2], L[3]};
+    XYZ2 = {0.0, L[4], L[5], L[6]};
     A = L[7];
 }
 
@@ -49,27 +49,27 @@ GeometryData GeometryInput( SimulationState& S)
     g_.N = 0;  // 1162
 
     // resize arrays generously
-    g_.A.resize(g_.NW+5);
+    g_.A.resize(S.MW+1);
 
     g_.Sa.resize(S.MW+1);
     g_.CABG.resize(S.MW+1, std::vector<double>(4, 0.0));
 
     //ELM.resize(4, std::vector<double>(3, 0.0));
-    g_.ELM.assign(2 * g_.NW + 2, std::vector<double>(3, 0.0));
+    g_.ELM.assign(S.MW+S.MP, std::vector<double>(4, 0.0));
 
     // make Cp, Wp, Na large enough for pulses
     g_.Cp.resize(S.MP+1, std::vector<int>(3, 0));
     g_.Wp.resize(S.MP+1, 0);
     g_.Na.resize(S.MW+1, std::vector<int>(3, 0));
 
-    g_.Xa.resize(S.MS+1);
-    g_.Ya.resize(S.MS+1);
-    g_.Za.resize(S.MS+1);
+    g_.Xa.resize(S.MS+1);               // 6
+    g_.Ya.resize(S.MS+1);               // 6
+    g_.Za.resize(S.MS+1);               // 6
 
     for (int I = 1; I <= g_.NW; I++) {   // 1163
 
         int S1 = 0;
-        std::vector<double> XYZ1(3), XYZ2(3);
+        std::vector<double> XYZ1(4), XYZ2(4);
 
         if (INFILE) {
             double rad;
@@ -85,15 +85,17 @@ GeometryData GeometryInput( SimulationState& S)
         Connections(I, g_.NW, S.G, XYZ1, XYZ2, g_.A, S1, g_.ELM, g_.J1a, g_.J2a, I1, I2);
 
         // direction cosines
-        std::vector<double> XYZ3(3);
-        for (int k=0; k<3; ++k)          // 1190 - 1192
-            XYZ3[k] = XYZ2[k] - XYZ1[k];
+        std::vector<double> XYZ3(4);
 
-        double D = std::sqrt(XYZ3[0]*XYZ3[0] + XYZ3[1]*XYZ3[1] + XYZ3[2]*XYZ3[2]); // 1193
+        XYZ3[1] = XYZ2[1] - XYZ1[1];    // 1190
+        XYZ3[2] = XYZ2[2] - XYZ1[2];    // 1191
+        XYZ3[3] = XYZ2[3] - XYZ1[3];    // 1192
 
-        g_.CABG[I][1] = XYZ3[0]/D;  // 1194
-        g_.CABG[I][2] = XYZ3[1]/D;  // 1195
-        g_.CABG[I][3] = XYZ3[2]/D;  // 1196
+        double D = std::sqrt(XYZ3[1]*XYZ3[1] + XYZ3[2]*XYZ3[2] + XYZ3[3]*XYZ3[3]); // 1193
+
+        g_.CABG[I][1] = XYZ3[1]/D;  // 1194
+        g_.CABG[I][2] = XYZ3[2]/D;  // 1195
+        g_.CABG[I][3] = XYZ3[3]/D;  // 1196
 
         g_.Sa[I] = (D / S1);        // 1197
 
@@ -130,9 +132,9 @@ GeometryData GeometryInput( SimulationState& S)
             int I1idx = N1 + 2*(I-1);   //1217
             int I3 = I1idx;             // 1218
 
-            g_.Xa[I1idx] = XYZ1[0];     // 1219
-            g_.Ya[I1idx] = XYZ1[1];     // 1220
-            g_.Za[I1idx] = XYZ1[2];     // 1221
+            g_.Xa[I1idx] = XYZ1[1];     // 1219
+            g_.Ya[I1idx] = XYZ1[2];     // 1220
+            g_.Za[I1idx] = XYZ1[3];     // 1221
 
             if (g_.Cp[N1][1] != 0) {    // 1222
                 int II = std::abs(g_.Cp[N1][1]);                        // 1223
@@ -151,9 +153,9 @@ GeometryData GeometryInput( SimulationState& S)
 
             for (int I4 = I1idx+1; I4 <= I6; ++I4) {                    // 1231
                 int J = I4 - I3;                                        // 1232
-                g_.Xa[I4] = XYZ1[0] + J*XYZ3[0]/S1;                     // 1233
-                g_.Ya[I4] = XYZ1[1] + J*XYZ3[1]/S1;                     // 1234
-                g_.Za[I4] = XYZ1[2] + J*XYZ3[2]/S1;                     // 1235
+                g_.Xa[I4] = XYZ1[1] + J*XYZ3[1]/S1;                     // 1233
+                g_.Ya[I4] = XYZ1[2] + J*XYZ3[2]/S1;                     // 1234
+                g_.Za[I4] = XYZ1[3] + J*XYZ3[3]/S1;                     // 1235
             }
 
             if (g_.Cp[g_.N][2] != 0) {                                  // 1237
@@ -172,13 +174,13 @@ GeometryData GeometryInput( SimulationState& S)
             // single segment  0 pulse case
             int I1idx = N1 + 2*(I-1);           // 1247
 
-            g_.Xa[I1idx]   = XYZ1[0];           // 1248
-            g_.Ya[I1idx]   = XYZ1[1];           // 1249
-            g_.Za[I1idx]   = XYZ1[2];           // 1250
+            g_.Xa[I1idx]   = XYZ1[1];           // 1248
+            g_.Ya[I1idx]   = XYZ1[2];           // 1249
+            g_.Za[I1idx]   = XYZ1[3];           // 1250
 
-            g_.Xa[I1idx+1] = XYZ2[0];           // 1252
-            g_.Ya[I1idx+1] = XYZ2[1];           // 1253
-            g_.Za[I1idx+1] = XYZ2[2];           // 1254
+            g_.Xa[I1idx+1] = XYZ2[1];           // 1252
+            g_.Ya[I1idx+1] = XYZ2[2];           // 1253
+            g_.Za[I1idx+1] = XYZ2[3];           // 1254
         }
 
     } // end FOR

@@ -3,10 +3,6 @@
 #include <cmath>
 #include "Connections.hpp"
 
-// global equivalents
-//std::vector<int> J1a;
-//std::vector<std::vector<int>> J2a;
-
 static void WriteConnection(
     const std::vector<double>& XYZ1,
     const std::vector<double>& XYZ2,
@@ -22,10 +18,10 @@ static void WriteConnection(
     std::cout << std::fixed;
     std::cout.precision(3);
 
-    std::cout << XYZ1[0] << "\t" << XYZ1[1] << "\t" << XYZ1[2]
+    std::cout << XYZ1[1] << "\t" << XYZ1[2] << "\t" << XYZ1[3]
               << "\t\t" << I1 << "\n";
 
-    std::cout << XYZ2[0] << "\t" << XYZ2[1] << "\t" << XYZ2[2]
+    std::cout << XYZ2[1] << "\t" << XYZ2[2] << "\t" << XYZ2[3]
               << "\t" << A << "\t" << I2 << "\t " << S1 << "\n\n";
 }
 
@@ -56,13 +52,13 @@ void Connections(
         J2a.resize(NW + 5, std::vector<int>(3, 0));
 
     // Equivalent logic
-    ELM[I][0] = XYZ1[0];
     ELM[I][1] = XYZ1[1];
     ELM[I][2] = XYZ1[2];
+    ELM[I][3] = XYZ1[3];
 
-    ELM[I+NW][0] = XYZ2[0];
     ELM[I+NW][1] = XYZ2[1];
     ELM[I+NW][2] = XYZ2[2];
+    ELM[I+NW][3] = XYZ2[3];
 
     int Gp = 0;
     I1 = 0;
@@ -87,9 +83,9 @@ void Connections(
         for (int J = 1; J <= I-1; ++J) {
 
             // END1 to END1
-            if (XYZ1[0] == ELM[J][0] &&
-                XYZ1[1] == ELM[J][1] &&
-                XYZ1[2] == ELM[J][2])
+            if (XYZ1[1] == ELM[J][1] &&
+                XYZ1[2] == ELM[J][2] &&
+                XYZ1[3] == ELM[J][3])
             {
                 I1 = -J;
                 J2a[I][1] = J;
@@ -98,9 +94,9 @@ void Connections(
             }
 
             // END1 to END2
-            if (XYZ1[0] == ELM[J+NW][0] &&
-                XYZ1[1] == ELM[J+NW][1] &&
-                XYZ1[2] == ELM[J+NW][2])
+            if (XYZ1[1] == ELM[J+NW][1] &&
+                XYZ1[2] == ELM[J+NW][2] &&
+                XYZ1[3] == ELM[J+NW][3])
             {
                 I1 = J;
                 J2a[I][1] = J;
@@ -117,12 +113,12 @@ void Connections(
 
     else if (G == -1) {
 
-        if (XYZ1[2] == 0) {
+        if (XYZ1[3] == 0) {
             I1 = -I;
             J1a[I] = -1;
         }
         else {
-            if (XYZ2[2] == 0) {
+            if (XYZ2[3] == 0) {
                 I2 = -I;
                 J1a[I] = 1;
                 Gp = 1;
@@ -134,9 +130,9 @@ void Connections(
 
             for (int J = 1; J <= I-1; ++J) {
 
-                if (XYZ1[0] == ELM[J][0] &&
-                    XYZ1[1] == ELM[J][1] &&
-                    XYZ1[2] == ELM[J][2])
+                if (XYZ1[1] == ELM[J][1] &&
+                    XYZ1[2] == ELM[J][2] &&
+                    XYZ1[3] == ELM[J][3])
                 {
                     I1 = -J;
                     J2a[I][1] = J;
@@ -144,9 +140,9 @@ void Connections(
                     break;
                 }
 
-                if (XYZ1[0] == ELM[J+NW][0] &&
-                    XYZ1[1] == ELM[J+NW][1] &&
-                    XYZ1[2] == ELM[J+NW][2])
+                if (XYZ1[1] == ELM[J+NW][1] &&
+                    XYZ1[2] == ELM[J+NW][2] &&
+                    XYZ1[3] == ELM[J+NW][3])
                 {
                     I1 = J;
                     J2a[I][1] = J;
@@ -175,9 +171,9 @@ void Connections(
         if (I != 1) {
             for (int J = 1; J <= I-1; ++J) {
 
-                if (XYZ2[0] == ELM[J+NW][0] &&
-                    XYZ2[1] == ELM[J+NW][1] &&
-                    XYZ2[2] == ELM[J+NW][2])
+                if (XYZ2[1] == ELM[J+NW][1] &&
+                    XYZ2[2] == ELM[J+NW][2] &&
+                    XYZ2[3] == ELM[J+NW][3])
                 {
                     I2 = -J;
                     J2a[I][2] = J;
@@ -185,9 +181,9 @@ void Connections(
                     break;
                 }
 
-                if (XYZ2[0] == ELM[J][0] &&
-                    XYZ2[1] == ELM[J][1] &&
-                    XYZ2[2] == ELM[J][2])
+                if (XYZ2[1] == ELM[J][1] &&
+                    XYZ2[2] == ELM[J][2] &&
+                    XYZ2[3] == ELM[J][3])
                 {
                     I2 = J;
                     J2a[I][2] = J;
