@@ -6,16 +6,9 @@
 
 #include "SimulationState.hpp"
 #include "GeometryInput.hpp"
+#include "PrintCurrents.hpp"
 
 using namespace std;
-
-// std::vector<std::vector<double>> CABG;
-// std::vector<int> Sa;
-// std::vector<std::vector<int>> Na;
-// std::vector<std::vector<int>> Cp;
-// std::vector<int> Wp;
-// std::vector<double> Xa, Ya, Za, A;
-// std::vector<std::vector<double>> ELM;
 
 // File streams
 std::ofstream fidPsi;
@@ -34,15 +27,7 @@ int EnvironmentInput() {
     return -1; // -1 => Ground Plane, for the MININEC.INP standard test-example
 }
 
-// void GeometryInput(double G) {
-//     // TODO: Implement
-// }
-
 void FarFieldCalculation() {
-    // TODO: Implement
-}
-
-void PrintCurrents() {
     // TODO: Implement
 }
 
@@ -98,7 +83,7 @@ int main() {
             break;
         case 'C':
             cout << "COMPUTE/DISPLAY CURRENTS\n";
-
+            PrintCurrents();
             break;
         case 'Q':
             cout << "Programmet avslutas.\n";

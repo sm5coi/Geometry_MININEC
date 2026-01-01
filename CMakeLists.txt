@@ -14,6 +14,8 @@ add_executable(Geometry_MININEC main.cpp
     GeometryOutput.cpp
     GeometryData.hpp
     SimulationState.hpp
+    PrintCurrents.cpp
+    PrintCurrents.hpp
 )
 
 include(GNUInstallDirs)
