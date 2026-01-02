@@ -1,14 +1,15 @@
 ﻿#ifndef SIMULATIONSTATE_HPP
 #define SIMULATIONSTATE_HPP
 
-//#include <vector>
-//#include <complex>
+#include <vector>
+#include <complex>
 //#include <array>
 #include <string>
 #include <cmath>
 
 struct SimulationState
 {
+    // State variabled due to Common in MININEC3
     int G = 1;  // Freespace G = 1; Ground Plane G = -1
     int FLG = 0;
     int MS = 150;   // Maximum number of segments (Pulses + 2 * Wires) = 150
@@ -23,6 +24,10 @@ struct SimulationState
     std::string BSd = "********************";
     std:: string Os = "D";
     char CSd;
+
+    // State variables due to PrintCurrents()
+    std::vector<std::complex<double>> CurrX;
+
 };
 
 #endif // SIMULATIONSTATE_HPP

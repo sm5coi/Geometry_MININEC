@@ -50,6 +50,10 @@ int main() {
 
     GeometryData g = GeometryInput( S);
 
+    PrintCurrents(S, g);
+
+    /*
+
     // Open output files
     fidPsi.open("PSI_DATA.dat");
     fidGau.open("GAUSS_DATA.dat");
@@ -83,7 +87,7 @@ int main() {
             break;
         case 'C':
             cout << "COMPUTE/DISPLAY CURRENTS\n";
-            PrintCurrents();
+            PrintCurrents(S, g);
             break;
         case 'Q':
             cout << "Programmet avslutas.\n";
@@ -99,6 +103,9 @@ int main() {
     fidPsi.close();
     fidGau.close();
     fidZRZI.close();
+*/
 
     return 0;
 }
+
+// https://chatgpt.com/s/t_695774e61f8c8191922e1140fb1844b8
