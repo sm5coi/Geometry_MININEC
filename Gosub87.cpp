@@ -6,7 +6,6 @@
 void Gosub87(
     SimulationState& S,
     GeometryData g,
-    //int I, int J, int K,
     double SRM,
     double P1, double P2, double P3,
     const std::vector<double>& Xa,
@@ -46,7 +45,6 @@ void Gosub87(
 
     Gosub113(
         S,
-        //K,
         P2, P3,
         Xa, Ya, Za,
         X1, Y1, Z1,
@@ -56,12 +54,11 @@ void Gosub87(
 
     Gosub135(
         S,
-        //I, J, K,
         X2, Y2, Z2,
         V1, V2, V3,
         P2, P3,
         S.CSd,
-        g.J2a,        // <-- now matches std::vector<std::array<int,2>>
+        g.J2a,
         g.Wp,
         SRM,
         FVS,

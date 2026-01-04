@@ -1,5 +1,5 @@
 ﻿#include "Gosub135.hpp"
-//#include "KernelEval.hpp"
+#include "KernelEval.hpp"
 #include <cmath>
 
 void Gosub135(
@@ -92,15 +92,15 @@ void Gosub135(
         double T4 = 0.0;
 
         double TT = (Q[L] + 0.5) / F2;
-        // KernelEval(S, K, X2, Y2, Z2, V1, V2, V3,
-        //            TT, W, SRM, I6u, Ap4,
-        //            T3, T4);
+        KernelEval(S, X2, Y2, Z2, V1, V2, V3,
+                   TT, W, SRM, I6u, Ap4,
+                   T3, T4);
 
 
         TT = (0.5 - Q[L]) / F2;
-        // KernelEval(S, K, X2, Y2, Z2, V1, V2, V3,
-        //            TT, W, SRM, I6u, Ap4,
-        //            T3, T4);
+        KernelEval(S, X2, Y2, Z2, V1, V2, V3,
+                   TT, W, SRM, I6u, Ap4,
+                   T3, T4);
 
 
         L++;

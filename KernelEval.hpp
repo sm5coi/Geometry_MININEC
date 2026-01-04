@@ -5,7 +5,6 @@
 
 void KernelEval(
     SimulationState& S,
-    //int K,
     double X2, double Y2, double Z2,
     double V1, double V2, double V3,
     double T,
@@ -16,8 +15,5 @@ void KernelEval(
     double& T3,
     double& T4
     );
-
-
-
 
 #endif

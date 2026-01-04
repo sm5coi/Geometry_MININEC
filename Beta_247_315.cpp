@@ -23,7 +23,6 @@ void Beta_247_315(
     Gosub102(                    // 252
         S,
          g,
-        //I, J, K,
         S.SRM,
         P1, P2, P3,
         T1, T2,
@@ -45,7 +44,6 @@ void Beta_247_315(
         Gosub102(
             S,
             g,
-            //I, J, K,
             S.SRM,
             P1, P2, P3,
             T1, T2,

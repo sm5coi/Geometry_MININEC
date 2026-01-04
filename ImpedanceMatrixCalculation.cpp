@@ -45,7 +45,7 @@ void ImpedanceMatrixCalculation(SimulationState& S, GeometryData g)
 
         if (g.Cp[S.I][1] == -g.Cp[S.I][2])
         {
-            T7 = g.Sa[I1] * (g.CABG[I1][3] + g.CABG[I2 - 1][3]);
+            T7 = g.Sa[I1] * (g.CABG[I1][3] + g.CABG[I2][3]);
         }
 
         // =========================
