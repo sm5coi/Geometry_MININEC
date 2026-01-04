@@ -51,10 +51,10 @@ void Gosub135(
     {
         // Check J2a coincidence conditions
         bool cond =
-            (J2a[Wp[S.I-1]][0] == J2a[Wp[S.J-1]][0]) ||
-            (J2a[Wp[S.I-1]][0] == J2a[Wp[S.J-1]][1]) ||
-            (J2a[Wp[S.I-1]][1] == J2a[Wp[S.J-1]][0]) ||
-            (J2a[Wp[S.I-1]][1] == J2a[Wp[S.J-1]][1]);
+            (J2a[Wp[S.I]][1] == J2a[Wp[S.J]][1]) ||
+            (J2a[Wp[S.I]][1] == J2a[Wp[S.J]][2]) ||
+            (J2a[Wp[S.I]][2] == J2a[Wp[S.J]][1]) ||
+            (J2a[Wp[S.I]][2] == J2a[Wp[S.J]][2]);
 
         if (cond)
         {
@@ -95,6 +95,7 @@ void Gosub135(
         KernelEval(S, X2, Y2, Z2, V1, V2, V3,
                    TT, W, SRM, I6u, Ap4,
                    T3, T4);
+
 
 
         TT = (0.5 - Q[L]) / F2;

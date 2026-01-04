@@ -1,5 +1,5 @@
 ﻿#include "Sub_273_312.hpp"
-//#include "Gosub87.hpp"
+#include "Gosub87.hpp"
 #include <cmath>
 
 // Helper to safely fetch Sa for J1/J2
@@ -48,11 +48,11 @@ void Sub_273_312(
     // ===== FIRST CALL =====
     if (F8 != 1)
     {
-        // Gosub87(S, I, J, K, SRM, P1, P2, P3,
-        //         Xa, Ya, Za, W,
-        //         A[P4],
-        //         SafeSa(Sa, P4),
-        //         T1_local, T2_local);
+        Gosub87(S, g, SRM, P1, P2, P3,
+                Xa, Ya, Za, W,
+                A[P4],
+                SafeSa(Sa, P4),
+                T1_local, T2_local);
 
         if (F8 < 2)
         {
@@ -86,11 +86,11 @@ void Sub_273_312(
     // BASIC 291–292
     P1 = P1 - 1.0;
 
-    // Gosub87(S, I, J, K, SRM, P1, P2, P3,
-    //         Xa, Ya, Za, W,
-    //         A[P4],
-    //         SafeSa(Sa, P4),
-    //         T1_local, T2_local);
+    Gosub87(S, g, SRM, P1, P2, P3,
+            Xa, Ya, Za, W,
+            A[P4],
+            SafeSa(Sa, P4),
+            T1_local, T2_local);
 
     // BASIC 293–294
     double SaJ2 = SafeSa(Sa, J2);
@@ -112,11 +112,11 @@ void Sub_273_312(
     P2 = P2 - 1.0;
     P4 = J1;
 
-    // Gosub87(S, I, J, K, SRM, P1, P2, P3,
-    //         Xa, Ya, Za, W,
-    //         A[P4],
-    //         SafeSa(Sa, P4),
-    //         T1_local, T2_local);
+    Gosub87(S, g, SRM, P1, P2, P3,
+            Xa, Ya, Za, W,
+            A[P4],
+            SafeSa(Sa, P4),
+            T1_local, T2_local);
 
     double U3 = T1_local;
     double U4 = T2_local;
@@ -126,11 +126,11 @@ void Sub_273_312(
     {
         P1 = P1 - 1.0;
 
-        // Gosub87(S, I, J, K, SRM, P1, P2, P3,
-        //         Xa, Ya, Za, W,
-        //         A[P4],
-        //         SafeSa(Sa, P4),
-        //         T1_local, T2_local);
+        Gosub87(S, g, SRM, P1, P2, P3,
+                Xa, Ya, Za, W,
+                A[P4],
+                SafeSa(Sa, P4),
+                T1_local, T2_local);
     }
     else
     {

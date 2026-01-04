@@ -1,5 +1,4 @@
 ﻿#include "ImpedanceMatrixCalculation.hpp"
-//#include "Gosub102.hpp"
 #include "Beta_247_315.hpp"
 //#include "MatSolve.hpp"
 //#include "SourceData.hpp"

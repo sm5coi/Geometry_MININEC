@@ -31,9 +31,9 @@ void Gosub102(
         }
     }
 
-    double X1 = Xa[(int)P1 - 1];
-    double Y1 = Ya[(int)P1 - 1];
-    double Z1 = Za[(int)P1 - 1];
+    double X1 = Xa[(int)P1];
+    double Y1 = Ya[(int)P1];
+    double Z1 = Za[(int)P1];
 
     double X2, Y2, Z2;
     double V1, V2, V3;
