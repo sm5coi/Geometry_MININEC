@@ -1,5 +1,5 @@
 ﻿#include "PrintCurrents.hpp"
-// #include "ImpedanceMatrixCalculation.hpp"
+#include "ImpedanceMatrixCalculation.hpp"
 #include "SimulationState.hpp"
 #include "GeometryData.hpp"
 #include <iostream>
@@ -194,9 +194,10 @@ SortJunction(int Ep, int I, int C, int K, const SimulationState& S, const Geomet
 void PrintCurrents(SimulationState& S, const GeometryData g)
 {
     std::cout << "Entry of PrintCurrents" << std::endl;
-    // BASIC line 497
-    // compute impedances + currents
-    // ImpedanceMatrixCalculation(S);
+
+    // BASIC line 497 compute impedances + currents
+    ImpedanceMatrixCalculation(S,g);
+
     //std::vector<std::complex<double>> CurrX;
     S.CurrX.resize(11);
 
@@ -219,46 +220,46 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
 
     std::cout << "\n\n************ CURRENT DATA ************\n";
 
-    for (int K = 1; K <= g.NW; ++K)
+    for (int K = 1; K <= g.NW; ++K)     // 501
     {
-        if (Sflag != 'Y')
+        if (Sflag != 'Y')               // 502
         {
-            std::cout << "\nWIRE NO. " << K << "\n";
-            std::cout << "PULSE        REAL         IMAGINARY     MAGNITUDE     PHASE\n";
-            std::cout << " NO.         (AMPS)       (AMPS)        (AMPS)        (DEGREES)\n";
+            std::cout << "\nWIRE NO. " << K << "\n";                                            // 504
+            std::cout << "PULSE        REAL         IMAGINARY     MAGNITUDE     PHASE\n";       // 505
+            std::cout << " NO.         (AMPS)       (AMPS)        (AMPS)        (DEGREES)\n";   // 506
         }
 
-        int N1 = g.Na[K][1];
-        int N2 = g.Na[K][2];
-        int I = N1;
+        int N1 = g.Na[K][1];                        // 507
+        int N2 = g.Na[K][2];                        // 508
+        int I = N1;                                 // 509
 
-        int C = g.Cp[I][1];
-        if (N1 == 0 && N2 == 0) C = K;
+        int C = g.Cp[I][1];                         // 510
+        if (N1 == 0 && N2 == 0) C = K;              // 511
 
         // BASIC 512-514 ground logic
-        if (S.G != 1 && g.J1a[K] == -1 && N1 > N2)
-            N2 = N1;
+        if (S.G != 1 && g.J1a[K] == -1 && N1 > N2)  //
+            N2 = N1;                                // 513
 
 
         if (!(g.J1a[K] == -1) || S.G == 1)
         {
-            int Ep = 1;
-            auto [Iju, Is] = SortJunction(Ep, I, C, K, S, g);
+            int Ep = 1;                             // 515
+            auto [Iju, Is] = SortJunction(Ep, I, C, K, S, g);   // 516
 
             PrintOutS(std::cout, Is, Iju);
 
-            if (!(N1 == 0))
+            if (!(N1 == 0))                         // 522
             {
-                if (C == K)
+                if (C == K)                         // 523
                 {
                     // nothing
                 }
                 else if (Is == 'J')
                 {
-                    N1++;
+                    N1++;                           // 524
                 }
 
-                for (int seg = N1; seg <= N2 - 1; ++seg)
+                for (int seg = N1; seg <= N2 - 1; ++seg)        // 525
                     PrintOutD(std::cout, seg, S.CurrX[seg]);
             }
         }
@@ -268,29 +269,29 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
                 PrintOutD(std::cout, seg, S.CurrX[seg]);
         }
 
-        I = N2;
-        C = g.Cp[I][2];
-        if (N1 == 0 && N2 == 0) C = K;
+        I = N2;                                     // 532
+        C = g.Cp[I][2];                             // 533
+        if (N1 == 0 && N2 == 0) C = K;              // 534
 
-        if (S.G == 1 || !(g.J1a[K] == 1))
+        if (S.G == 1 || !(g.J1a[K] == 1))           // 535 & 536
         {
-            int Ep = 2;
-            auto [Iju, Is] = SortJunction(Ep, I, C, K, S, g);
+            int Ep = 2;                             // 537
+            auto [Iju, Is] = SortJunction(Ep, I, C, K, S, g);   // 538
 
-            if ((N1 == 0 && N2 == 0) || (N1 > N2))
+            if ((N1 == 0 && N2 == 0) || (N1 > N2))  // 539 & 540
             {
                 PrintOutS(std::cout, Is, Iju);
             }
             else
             {
-                if (C == K)
+                if (C == K)                         // 541
                 {
                     PrintOutD(std::cout, N2, S.CurrX[N2]);
                     PrintOutS(std::cout, Is, Iju);
                 }
-                else if (Is == 'J')
+                else if (Is == 'J')                 // 542
                 {
-                    PrintOutS(std::cout, Is, Iju);
+                    PrintOutS(std::cout, Is, Iju);  // 551
                 }
                 else
                 {
@@ -303,6 +304,6 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
         {
             PrintOutD(std::cout, N2, S.CurrX[N2]);
         }
-    }
+    }                                               // 555 (NEXT K)
     std::cout << "Exit of PrintCurrents" << std::endl;
 }

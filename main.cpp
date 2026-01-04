@@ -5,6 +5,7 @@
 #include <cctype>
 
 #include "SimulationState.hpp"
+#include "FrequencyInput.hpp"
 #include "GeometryInput.hpp"
 #include "PrintCurrents.hpp"
 
@@ -18,9 +19,9 @@ std::ofstream fidZRZI;
 // ===== PLACEHOLDER FUNCTIONS =====
 // (These must be implemented separately later)
 
-void FrequencyInput() {
-    // TODO: Implement
-}
+// void FrequencyInput() {
+//     // TODO: Implement
+// }
 
 int EnvironmentInput() {
     // TODO: Implement
@@ -45,10 +46,10 @@ int main() {
 
     std::cout << S.BSd << S.BSd << std::endl;
 
-    FrequencyInput();
+    FrequencyInput(S);
     S.G = EnvironmentInput();
 
-    GeometryData g = GeometryInput( S);
+    GeometryData g = GeometryInput(S);
 
     PrintCurrents(S, g);
 

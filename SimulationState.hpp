@@ -28,6 +28,29 @@ struct SimulationState
     // State variables due to PrintCurrents()
     std::vector<std::complex<double>> CurrX;
 
+    // impedance
+    std::vector<std::vector<double>> ZR;
+    std::vector<std::vector<double>> ZI;
+    std::vector<std::complex<double>> Z;
+
+    // =================== BASIC frequency globals =====================
+    // Converted from global common block in MININEC
+    double S0 = 0.0;
+    double M  = 0.0;
+    double SRM = 0.0;
+    double W = 0.0;
+    double W2 = 0.0;
+
+    // =================== impedance calc flags ========================
+    double F5 = 0.0;
+    double F8 = 0.0;
+
+    // loop variabels in ImpedanceMatrixCalculation ad it subs
+    int I;
+    int J;
+    int K;
+
+
 };
 
 #endif // SIMULATIONSTATE_HPP

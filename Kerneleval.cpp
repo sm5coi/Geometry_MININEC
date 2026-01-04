@@ -1,0 +1,68 @@
+﻿#include "KernelEval.hpp"
+#include "EllipticIntegral.hpp"
+#include <cmath>
+
+// KernelEval: translation of NEC/MININEC core routine
+void KernelEval(
+    SimulationState& S,
+    //int K,
+    double X2, double Y2, double Z2,
+    double V1, double V2, double V3,
+    double T, double W,
+    double SRM,
+    double I6u,
+    double Ap4,
+    double& T3,
+    double& T4
+    )
+{
+    const double A2 = Ap4 * Ap4;
+
+    double X3, Y3, Z3;
+
+    // MATLAB: if K>=0 else branch
+    if (S.K >= 0)
+    {
+        X3 = X2 + T * (V1 - X2);
+        Y3 = Y2 + T * (V2 - Y2);
+        Z3 = Z2 + T * (V3 - Z2);
+    }
+    else
+    {
+        X3 = V1 + T * (X2 - V1);
+        Y3 = V2 + T * (Y2 - V2);
+        Z3 = V3 + T * (Z2 - V3);
+    }
+
+    double D3 = X3*X3 + Y3*Y3 + Z3*Z3;
+    double D;
+
+    // small-radius condition
+    if (Ap4 <= SRM)
+    {
+        D = std::sqrt(D3);
+    }
+    else
+    {
+        D = D3 + A2;
+        if (D > 0.0)
+            D = std::sqrt(D);
+
+        if (I6u != 0.0)
+        {
+            // Exact kernel: Elliptic integral
+            double B = D3 / (D3 + 4.0*A2);
+
+            double V0 = EllipticIntegral(B);
+            V0 *= std::sqrt(1.0 - B);
+
+            T3 += (V0 + std::log(D3/(64.0*A2))/2.0) / (M_PI * Ap4) - 1.0/D;
+        }
+    }
+
+    const double B1 = D * W;
+
+    // exp(-j k r) / r
+    T3 += std::cos(B1)/D;   // real part
+    T4 -= std::sin(B1)/D;   // imaginary part
+}
