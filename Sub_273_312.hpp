@@ -10,8 +10,7 @@ void Sub_273_312(
     GeometryData g,
     int J1, int J2,
     double T1, double T2,
-    double& U1, double& U2,
-    double P1, double P3
+    double& U1, double& U2
     );
 
 #endif

@@ -15,12 +15,9 @@ void Sub_273_312(
     GeometryData g,
     int J1, int J2,
     double T1, double T2,
-    double& U1, double& U2,
-    double P1, double P3)
+    double& U1, double& U2)
 {
-    auto& Sa  = g.Sa;
-    auto& F5  = S.F5;
-    auto& F8  = S.F8;
+    //    auto& Sa  = g.Sa;
     auto& SRM = S.SRM;
     auto& Xa  = g.Xa;
     auto& Ya  = g.Ya;
@@ -28,16 +25,12 @@ void Sub_273_312(
     auto& W   = S.W;
     auto& A   = g.A;
 
-    // BASIC 274
-    P1 = P1 + 0.5;
-
-    // BASIC 275
-    if (F8 == 2)
-        P1 = P1 - 1.0;
-
-    double P2 = P3;
-    P3 = P3 + 1.0;
-    int P4 = J2;
+    // 273 REM ----- COMPUTE PSI(M+1/2,N,N+1)
+    S.P1 = S.P1 + 0.5;              // 274
+    if (S.F8 == 2) S.P1 = S.P1 - 1; // 275
+    S.P2 = S.P3;                    // 276
+    S.P3 = S.P3 + 1.0;              // 277
+    S.P4 = J2;                      // 278
 
     double T1_local = T1;
     double T2_local = T2;
@@ -46,64 +39,63 @@ void Sub_273_312(
     double U6 = 0.0;
 
     // ===== FIRST CALL =====
-    if (F8 != 1)
+    if (S.F8 != 1)                                // 279
     {
-        Gosub87(S, g, SRM, P1, P2, P3,
+        Gosub87(S, g, SRM, S.P1, S.P2, S.P3,    // 283
                 Xa, Ya, Za, W,
-                A[P4],
-                SafeSa(Sa, P4),
+                A[S.P4],
+                g.Sa[S.P4],
                 T1_local, T2_local);
 
-        if (F8 < 2)
+        if (S.F8 < 2)                           // 284
         {
-            U5 = T1_local;
-            U6 = T2_local;
+            U5 = T1_local;                      // 288
+            U6 = T2_local;                      // 289
         }
         else
         {
-            // BASIC 285–286
-            double SaJ1 = SafeSa(Sa, J1);
-            if (SaJ1 == 0.0)
-            {
-                U1 = 0.0;
-                U2 = 0.0;
-                return;
-            }
+            // // BASIC 285–286
+            // double SaJ1 = SafeSa(Sa, J1);
+            // if (SaJ1 == 0.0)
+            // {
+            //     U1 = 0.0;
+            //     U2 = 0.0;
+            //     return;
+            // }
 
-            U1 = (2*T1_local - 4*U1*F5) / SaJ1;
-            U2 = (2*T2_local - 4*U2*F5) / SaJ1;
+            U1 = (2*T1_local - 4*U1*S.F5) / g.Sa[J1];   // 285
+            U2 = (2*T2_local - 4*U2*S.F5) / g.Sa[J1];   // 286
             return;
         }
     }
     else
     {
-        // BASIC 280–281
-        U5 = F5 * U1 + T1_local;
-        U6 = F5 * U2 + T2_local;
+        U5 = S.F5 * U1 + T1_local;      // 280
+        U6 = S.F5 * U2 + T2_local;      // 281
     }
 
     // ===== SECOND CALL =====
-    // BASIC 291–292
-    P1 = P1 - 1.0;
 
-    Gosub87(S, g, SRM, P1, P2, P3,
+    // 290 REM ----- COMPUTE PSI(M-1/2,N,N+1)
+    S.P1 = S.P1 - 1;                        // 291
+
+    Gosub87(S, g, SRM, S.P1, S.P2, S.P3,    // 292
             Xa, Ya, Za, W,
-            A[P4],
-            SafeSa(Sa, P4),
+            A[S.P4],
+            g.Sa[S.P4],
             T1_local, T2_local);
 
-    // BASIC 293–294
-    double SaJ2 = SafeSa(Sa, J2);
-    if (SaJ2 == 0.0)
-    {
-        U1 = 0.0;
-        U2 = 0.0;
-    }
-    else
-    {
-        U1 = (T1_local - U5) / SaJ2;
-        U2 = (T2_local - U6) / SaJ2;
-    }
+    // double SaJ2 = SafeSa(Sa, J2);
+    // if (SaJ2 == 0.0)
+    // {
+    //     U1 = 0.0;
+    //     U2 = 0.0;
+    // }
+    // else
+    // {
+    U1 = (T1_local - U5) / g.Sa[J2];    //293
+    U2 = (T2_local - U6) / g.Sa[J2];    // 294
+    //}
 
     // ===== THIRD CALL =====
     // BASIC 296–299

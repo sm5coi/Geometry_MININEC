@@ -42,8 +42,16 @@ struct SimulationState
     double W2 = 0.0;
 
     // =================== impedance calc flags ========================
-    double F5 = 0.0;
-    double F8 = 0.0;
+    int F4 = 0;
+    int F5 = 0;
+    int F6 = 0;
+    int F7 = 0;
+    int F8 = 0;
+
+    int P1 = 0;
+    double P2 = 0.0;
+    double P3 = 0.0;
+    int P4 = 0;
 
     // loop variabels in ImpedanceMatrixCalculation ad it subs
     int I;
