@@ -1,4 +1,5 @@
 ﻿#include "ImpedanceMatrixCalculation.hpp"
+#include "ImpedanceMatrixFactorization.hpp"
 #include "Beta_247_315.hpp"
 //#include "MatSolve.hpp"
 //#include "SourceData.hpp"
@@ -21,8 +22,8 @@ void ImpedanceMatrixCalculation(SimulationState& S, GeometryData g)
         int I1 = std::abs(g.Cp[S.I][1]);                    // 212
         int I2 = std::abs(g.Cp[S.I][2]);                    // 213
 
-        int F4i = std::copysign(g.Sa[I1], g.Cp[S.I][1]);     // 214
-        int F5i = std::copysign(g.Sa[I1], g.Cp[S.I][1]);     // 215
+        double F4i = std::copysign(g.Sa[I1], g.Cp[S.I][1]);     // 214
+        double F5i = std::copysign(g.Sa[I1], g.Cp[S.I][2]);     // 215
 
         // if (I1 > 0)
         //     F4 = std::copysign(g.Sa[I1], g.Cp[S.I][1]);
@@ -135,55 +136,65 @@ void ImpedanceMatrixCalculation(SimulationState& S, GeometryData g)
         } // Next J                             // 333
     } // Next I                                 // 336
 
-    // 337 REM ----- END MATRIX FILL TIME CALCULATION
-    // ===================================
-    // flatten ZR, ZI -> complex Z
-    // ===================================
-    S.Z.assign((g.N+1)*(g.N+1), std::complex<double>(0, 0));
 
-    for (int i = 1; i <= g.N; ++i)
-    {
-        for (int j = 1; j <= g.N; ++j)
-        {
-            S.Z[i * g.N + j] = std::complex<double>(S.ZR[i][j], S.ZI[i][j]);
-        }
-    }
+    // AdditionOfLoads()
 
+    ImpedanceMatrixFactorization(S, g);
+
+    // MatSolve()
+
+    // SourceData()
+
+
+    // // 337 REM ----- END MATRIX FILL TIME CALCULATION
     // // ===================================
-    // // solve Z * I = V
+    // // flatten ZR, ZI -> complex Z
     // // ===================================
+    // S.Z.assign((g.N+1)*(g.N+1), std::complex<double>(0, 0));
 
-    // // std::vector<std::vector<std::complex<double>>> Zm(N, std::vector<std::complex<double>>(N));
-    // // for (int i=0; i<N; i++)
-    // //     for (int j=0; j<N; j++)
-    // //         Zm[i][j] = S.Zat(i,j);
+    // for (int i = 1; i <= g.N; ++i)
+    // {
+    //     for (int j = 1; j <= g.N; ++j)
+    //     {
+    //         S.Z[i * g.N + j] = std::complex<double>(S.ZR[i][j], S.ZI[i][j]);
+    //     }
+    // }
 
-    // // S.CurrX = MatSolve(S.Z, S.b);
+    // // // ===================================
+    // // // solve Z * I = V
+    // // // ===================================
+
+    // // // std::vector<std::vector<std::complex<double>>> Zm(N, std::vector<std::complex<double>>(N));
+    // // // for (int i=0; i<N; i++)
+    // // //     for (int j=0; j<N; j++)
+    // // //         Zm[i][j] = S.Zat(i,j);
+
+    // // // S.CurrX = MatSolve(S.Z, S.b);
 
 
 
 
-    // // ===================================
-    // // source excitation & normalization
-    // // ===================================
+    // // // ===================================
+    // // // source excitation & normalization
+    // // // ===================================
 
-    // //SourceData(S, S.CurrX);
+    // // //SourceData(S, S.CurrX);
 
-    // SourceData(S);
-    // S.CurrX = MatSolve(S.Z_matrix, S.b);
+    // // SourceData(S);
+    // // S.CurrX = MatSolve(S.Z_matrix, S.b);
 
-    // build 2D impedance matrix
-    std::vector<std::vector<std::complex<double>>> Zmat(g.N+1, std::vector<std::complex<double>>(g.N+1));
+    // // build 2D impedance matrix
+    // std::vector<std::vector<std::complex<double>>> Zmat(g.N+1, std::vector<std::complex<double>>(g.N+1));
 
-    for (int i = 0; i < g.N; ++i)
-        for (int j = 0; j < g.N; ++j)
-            Zmat[i][j] = S.Z[i * g.N + j];
+    // for (int i = 0; i < g.N; ++i)
+    //     for (int j = 0; j < g.N; ++j)
+    //         Zmat[i][j] = S.Z[i * g.N + j];
 
-    // build excitation (b)
-    //SourceData(S);
+    // // build excitation (b)
+    // //SourceData(S);
 
-    // solve currents
-    //S.CurrX = MatSolve(Zmat, S.b);
+    // // solve currents
+    // //S.CurrX = MatSolve(Zmat, S.b);
 
     std::cout << "Size of S.CurrX: " << S.CurrX.size() << "\n";
 

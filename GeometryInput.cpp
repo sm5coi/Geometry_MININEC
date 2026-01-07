@@ -4,6 +4,7 @@
 #include "GeometryInput.hpp"
 #include "GeometryOutput.hpp"
 #include "Connections.hpp"
+#include "ExcitationInput.hpp"
 #include "SimulationState.hpp"
 
 //int FLG;  // global (as in MATLAB)
@@ -143,7 +144,7 @@ GeometryData GeometryInput( SimulationState& S)
                 g_.Xa[I1idx] -= F3 * g_.CABG[II][1];                    // 1225
                 g_.Ya[I1idx] -= F3 * g_.CABG[II][2];                    // 1226
                 // 1227 IF (C%(N1,1)=-I THEN F3 = -F3
-                // if Cp(N1,1)== -I, F3 = -F3; end
+                if (g_.Cp[N1][1] == -I) F3 = -F3;
                 g_.Za[I1idx] -= F3 * g_.CABG[II][3];                    // 1228
 
                 I3++;                                                   // 1229
@@ -166,7 +167,7 @@ GeometryData GeometryInput( SimulationState& S)
                 g_.Xa[I6] = g_.Xa[I3x] + F3*g_.CABG[II][1];             // 1241
                 g_.Ya[I6] = g_.Ya[I3x] + F3*g_.CABG[II][2];             // 1242
                 // 1243 IF I=-C%(N,2) THEN F3=-F3
-                // if I == -Cp(N,2), F3 = -F3; end
+                if (I == -g_.Cp[g_.N][2]) F3 = -F3;
                 g_.Za[I6] = g_.Za[I3x] + F3*g_.CABG[II][3];             // 1244
             }
         }
@@ -188,7 +189,9 @@ GeometryData GeometryInput( SimulationState& S)
     //   GEOMETRY OUTPUT
     g_.Cp = GeometryOutput(g_.N, g_.Wp, g_.NW, g_.Na, g_.Xa, g_.Ya, g_.Za, g_.A, g_.Cp);
 
-    S.FLG = 99;
+    ExcitationInput(S,10);
+
+    S.FLG = 0;
 
     return g_;
 }

@@ -18,27 +18,31 @@ void Gosub87(
     double& T2
     )
 {
-    int FVS = 1;
+    // 84 REM ----- ENTRIES REQUIRED FOR IMPEDANCE MATRIX CALCULATION
+    // 85 REM ----- S(M) GOES IN (X1,Y1,Z1) FOR SCALAR POTENTIAL
+    // 86 REM ----- MOD FOR SMALL RADIUS TO WAVE LENGTH RATIO
 
-    if (S.K >= 1)
+    int FVS = 1;        // 87
+
+    if (S.K >= 1)       // 88
     {
-        if (Ap4 <= SRM)
+        if (Ap4 <= SRM) // 89
         {
-            if ((P3 == P2 + 1.0) && (P1 == (P2 + P3) / 2.0))
+            if ((P3 == P2 + 1.0) && (P1 == (P2 + P3) / 2.0)) // 90
             {
-                T1 = 2.0 * std::log(Sa4 / Ap4);
-                T2 = -W * Sa4;
-                return;
+                T1 = 2.0 * std::log(Sa4 / Ap4); // 91
+                T2 = -W * Sa4;                  // 92
+                return;                         // 93
             }
         }
     }
 
-    int I4 = static_cast<int>(std::floor(P1));
-    int I5 = I4 + 1;
+    int I4 = static_cast<int>(std::floor(P1));  // 94
+    int I5 = I4 + 1;                            // 95
 
-    double X1 = (Xa[I4] + Xa[I5]) / 2.0;
-    double Y1 = (Ya[I4] + Ya[I5]) / 2.0;
-    double Z1 = (Za[I4] + Za[I5]) / 2.0;
+    double X1 = (Xa[I4] + Xa[I5]) / 2.0;        // 96
+    double Y1 = (Ya[I4] + Ya[I5]) / 2.0;        // 97
+    double Z1 = (Za[I4] + Za[I5]) / 2.0;        // 98
 
     double X2, Y2, Z2;
     double V1, V2, V3;

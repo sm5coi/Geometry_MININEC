@@ -25,8 +25,14 @@ struct SimulationState
     std:: string Os = "D";
     char CSd;
 
+    // In ImpedanceMatrixFactorization
+    std::vector<int> Pa;
+
     // State variables due to PrintCurrents()
     std::vector<std::complex<double>> CurrX;
+
+    // source vector + currents
+    std::vector<std::complex<double>> b;
 
     // impedance
     std::vector<std::vector<double>> ZR;
@@ -48,7 +54,7 @@ struct SimulationState
     int F7 = 0;
     int F8 = 0;
 
-    int P1 = 0;
+    double P1 = 0.0;
     double P2 = 0.0;
     double P3 = 0.0;
     int P4 = 0;
@@ -58,7 +64,11 @@ struct SimulationState
     int J;
     int K;
 
-
+    // Excitaion Input
+    int NS = 1;  // Number of Sources
+    std::vector<int> Ea;
+    std::vector<double> La;
+    std::vector<double> Ma;
 };
 
 #endif // SIMULATIONSTATE_HPP

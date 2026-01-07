@@ -84,6 +84,7 @@ void Beta_247_315(
         U1, U2
         );
 
-    S.ZR[S.I][S.J] += S.K * (D1 + U1);
-    S.ZI[S.I][S.J] += S.K * (D2 + U2);
+    // 313 REM ----- SUM INTO IMPEDANCE MATRIX
+    S.ZR[S.I][S.J] += S.K * (D1 + U1);                                  // 314
+    S.ZI[S.I][S.J] += S.K * (D2 + U2);                                  // 315
 }

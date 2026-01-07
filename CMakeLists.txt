@@ -36,6 +36,15 @@ add_executable(Geometry_MININEC main.cpp
     KernelEval.hpp
     EllipticIntegral.cpp
     EllipticIntegral.hpp
+    SourceData.cpp
+    SourceData.hpp
+    SourceData.hpp
+    ExcitationInput.cpp
+    ExcitationInput.hpp
+    MatSolve.cpp
+    MatSolve.hpp
+    ImpedanceMatrixFactorization.cpp
+    ImpedanceMatrixFactorization.hpp
 )
 
 include(GNUInstallDirs)

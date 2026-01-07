@@ -20,13 +20,13 @@ double EllipticIntegral(double B)
         return 0.0;
 
     // W0 = C0 + B*(C1 + B*(C2 + B*(C3 + B*C4)));
-    double W0 = C0 + B * ( C1 + B * ( C2 + B * ( C3 + B * C4 ) ) );
+    double W0 = C0 + B * ( C1 + B * ( C2 + B * ( C3 + B * C4 ) ) ); // 45
 
     // W1 = C5 + B*(C6 + B*(C7 + B*(C8 + B*C9)));
-    double W1 = C5 + B * ( C6 + B * ( C7 + B * ( C8 + B * C9 ) ) );
+    double W1 = C5 + B * ( C6 + B * ( C7 + B * ( C8 + B * C9 ) ) ); // 46
 
     // V0 = (W0 - W1 * log(B))
-    double V0 = W0 - W1 * std::log(B);
+    double V0 = W0 - W1 * std::log(B);  // part of 47, rest in KernelEval
 
     return V0;
 }

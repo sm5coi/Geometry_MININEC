@@ -99,46 +99,50 @@ void Sub_273_312(
 
     // ===== THIRD CALL =====
     // BASIC 296–299
-    P1 = P1 + 1.0;
-    P3 = P2;
-    P2 = P2 - 1.0;
-    P4 = J1;
+    // 295 REM ----- COMPUTE PSI(M+1/2,N-1,N)
+    S.P1 = S.P1 + 1;        // 296
+    S.P3 = S.P2;            // 297
+    S.P2 = S.P2 - 1.0;      // 298
+    S.P4 = J1;              // 299
 
-    Gosub87(S, g, SRM, P1, P2, P3,
+    Gosub87(S, g, SRM, S.P1, S.P2, S.P3,        // 300
             Xa, Ya, Za, W,
-            A[P4],
-            SafeSa(Sa, P4),
+            A[S.P4],
+            g.Sa[S.P4],
             T1_local, T2_local);
 
-    double U3 = T1_local;
-    double U4 = T2_local;
+    double U3 = T1_local;                       // 301
+    double U4 = T2_local;                       // 302
 
     // BASIC 304–309
-    if (F8 < 1)
+    // 303 REM ----- COMPUTE PSI(M-1/2,N-1,N)
+    if (S.F8 < 1)                               // 304
     {
-        P1 = P1 - 1.0;
+        S.P1 = S.P1 - 1;                        // 308
 
-        Gosub87(S, g, SRM, P1, P2, P3,
+        Gosub87(S, g, SRM, S.P1, S.P2, S.P3,    // 309
                 Xa, Ya, Za, W,
-                A[P4],
-                SafeSa(Sa, P4),
+                A[S.P4],
+                g.Sa[S.P4],
                 T1_local, T2_local);
     }
     else
     {
-        T1_local = U5;
-        T2_local = U6;
+        T1_local = U5;                          // 305
+        T2_local = U6;                          // 306
     }
 
     // BASIC 311–312
-    double SaJ1 = SafeSa(Sa, J1);
-    if (SaJ1 == 0.0)
-    {
-        U1 = 0.0;
-        U2 = 0.0;
-        return;
-    }
 
-    U1 = U1 + (U3 - T1_local) / SaJ1;
-    U2 = U2 + (U4 - T2_local) / SaJ1;
+    // 310 REM ----- GRADIENT OF SCALAR POTENTIAL CONTRIBUTION
+    // double SaJ1 = SafeSa(Sa, J1);
+    // if (SaJ1 == 0.0)
+    // {
+    //     U1 = 0.0;
+    //     U2 = 0.0;
+    //     return;
+    // }
+
+    U1 = U1 + (U3 - T1_local) / g.Sa[J1];       // 311
+    U2 = U2 + (U4 - T2_local) / g.Sa[J1];       // 312
 }
