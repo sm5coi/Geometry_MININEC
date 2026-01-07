@@ -3,6 +3,6 @@
 
 #include "SimulationState.hpp"
 
-void ExcitationInput(SimulationState S, int N);
+void ExcitationInput(SimulationState& S, int N);
 
 #endif // EXCITATIONINPUT_HPP

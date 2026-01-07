@@ -4,6 +4,6 @@
 #include "SimulationState.hpp"
 #include "GeometryData.hpp"
 
-void ImpedanceMatrixFactorization(SimulationState S, GeometryData g);
+void ImpedanceMatrixFactorization(SimulationState& S, GeometryData g);
 
 #endif // IMPEDANCEMATRIXFACTORIZATION_HPP

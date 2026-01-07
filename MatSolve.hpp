@@ -6,6 +6,6 @@
 #include <vector>
 #include <complex>
 
-void MatSolve(SimulationState S, GeometryData g);
+void MatSolve(SimulationState& S, GeometryData g);
 
 #endif

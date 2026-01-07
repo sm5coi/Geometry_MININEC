@@ -1,6 +1,6 @@
 ﻿#include "ImpedanceMatrixFactorization.hpp"
 
-void ImpedanceMatrixFactorization(SimulationState S, GeometryData g)
+void ImpedanceMatrixFactorization(SimulationState& S, GeometryData g)
 {
 
     S.Pa.resize(50);

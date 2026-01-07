@@ -1,7 +1,7 @@
 ﻿#include "ImpedanceMatrixCalculation.hpp"
 #include "ImpedanceMatrixFactorization.hpp"
 #include "Beta_247_315.hpp"
-//#include "MatSolve.hpp"
+#include "MatSolve.hpp"
 //#include "SourceData.hpp"
 #include <cmath>
 #include <iostream>
@@ -141,7 +141,7 @@ void ImpedanceMatrixCalculation(SimulationState& S, GeometryData g)
 
     ImpedanceMatrixFactorization(S, g);
 
-    // MatSolve()
+    MatSolve(S,g);
 
     // SourceData()
 

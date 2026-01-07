@@ -1,6 +1,6 @@
 ﻿#include "SimulationState.hpp"
 
-void ExcitationInput(SimulationState S, int N)
+void ExcitationInput(SimulationState& S, int N)
 
 // global MP P0 FLG Ea La Ma NS
 {

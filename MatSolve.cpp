@@ -4,7 +4,7 @@
 #include <vector>
 #include <complex>
 
-void MatSolve(SimulationState S, GeometryData g)
+void MatSolve(SimulationState& S, GeometryData g)
 {
 
     S.CR.resize(50);
@@ -46,7 +46,7 @@ void MatSolve(SimulationState S, GeometryData g)
     {
         double T1 = 0.0;    // 451 T1 = 0
         double T2 = 0.0;    // 452 T2 = 0
-        for (int J = 1; J <= I-1; ++I)  // 453 FOR J = 1 TO I - 1
+        for (int J = 1; J <= I-1; ++J)  // 453 FOR J = 1 TO I - 1
         {
             // 454 T1 = T1 + ZR(I, J) * CR(J) - ZI(I, J) * CI(J)
             T1 = T1 + S.ZR[I][J]*S.CR[J] - S.ZI[I][J]*S.CI[J];
@@ -58,25 +58,28 @@ void MatSolve(SimulationState S, GeometryData g)
     }   // 459 NEXT I
 
     // 460 REM ----- BACK SUBSTITUTION
-    for (int I = g.N; g.N >= 1; --I)     // 461 FOR I = N TO 1 STEP -1
+    for (int I = g.N; I >= 1; --I)     // 461 FOR I = N TO 1 STEP -1
     {
         double T1 = 0.0;    // 462 T1 = 0
         double T2 = 0.0;    // 463 T2 = 0
         if (I != g.N)       // 464 IF I = N THEN 469
         {
-            for (int J = I + 1; J <= N; ++J)    // 465 FOR J = I + 1 TO N
+            for (int J = I + 1; J <= g.N; ++J)    // 465 FOR J = I + 1 TO N
             {
                 // 466 T1 = T1 + ZR(I, J) * CR(J) - ZI(I, J) * CI(J)
-                T1 = T1 + ZR(I, J) * CR(J) - ZI(I, J) * CI(J)
+                T1 = T1 + S.ZR[I][J]*S.CR[J] - S.ZI[I][J]*S.CI[J];
                 // 467 T2 = T2 + ZR(I, J) * CI(J) + ZI(I, J) * CR(J)
-                T2 = T2 + ZR(I, J) * CI(J) + ZI(I, J) * CR(J)
+                T2 = T2 + S.ZR[I][J]*S.CI[J] + S.ZI[I][J]*S.CR[J];
             }   // 468 NEXT J
         }
         // 469 T = ZR(I, I) * ZR(I, I) + ZI(I, I) * ZI(I, I)
-        // 470 T1 = CR(I) - T1
-        // 471 T2 = CI(I) - T2
+        double T = S.ZR[I][I] * S.ZR[I][I] + S.ZI[I][I]*S.ZI[I][I];
+        T1 = S.CR[I] - T1;     // 470 T1 = CR(I) - T1
+        T2 = S.CI[I] - T2;     // 471 T2 = CI(I) - T2
         // 472 CR(I) = (T1 * ZR(I, I) + T2 * ZI(I, I)) / T
+        S.CR[I] = (T1*S.ZR[I][I] + T2*S.ZI[I][I])/T;
         // 473 CI(I) = (T2 * ZR(I, I) - T1 * ZI(I, I)) / T
+        S.CI[I] = (T2 * S.ZR[I][I] - T1*S.ZI[I][I])/T;
     }           //   474 NEXT I
     S.FLG = 2; //   475 FLG = 2
 }
