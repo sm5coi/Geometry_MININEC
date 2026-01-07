@@ -7,13 +7,14 @@ void ImpedanceMatrixFactorization(SimulationState S, GeometryData g)
 
     // 381 X = N
     // 382 PCTN = X * (X - 1) * (X + X - 1)
-    for (int K =1; K <= g.N; K++)     // 383 FOR K = 1 TO N - 1
+    for (int K =1; K <= (g.N-1); K++)     // 383 FOR K = 1 TO N - 1
     {
         // 384 REM ----- SEARCH FOR PIVOT
-        double T = S.ZR[K][K]*S.ZR[K][K] + S.ZI[K][K]*S.ZI[K][K];  // 385 T = ZR(K, K) * ZR(K, K) + ZI(K, K) * ZI(K, K)
+        // 385 T = ZR(K, K) * ZR(K, K) + ZI(K, K) * ZI(K, K)
+        double T = S.ZR[K][K]*S.ZR[K][K] + S.ZI[K][K]*S.ZI[K][K];
         int I1 = K;
         // 386 I1 = K
-        for (int I = K+1; K <= g.N; I++)   // 387 FOR I = K + 1 TO N
+        for (int I = K+1; I <= g.N; I++)   // 387 FOR I = K + 1 TO N
         {
             double T1 = S.ZR[I][K]*S.ZR[I][K] + S.ZI[I][K]*S.ZI[I][K]; // 388 T1 = ZR(I, K) * ZR(I, K) + ZI(I, K) * ZI(I, K)
             if (T1 < T) continue;  // 389 IF T1 < T THEN 392

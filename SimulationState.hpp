@@ -34,6 +34,9 @@ struct SimulationState
     // source vector + currents
     std::vector<std::complex<double>> b;
 
+    // solve vectors
+    std::vector<double> CR;
+    std::vector<double> CI;
     // impedance
     std::vector<std::vector<double>> ZR;
     std::vector<std::vector<double>> ZI;
