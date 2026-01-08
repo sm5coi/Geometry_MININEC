@@ -5,8 +5,6 @@
 #include <iostream>
 #include <complex>
 #include <iomanip>
-// #include <cmath>
-// #include <string>
 
 /*
 #include "PrintCurrents.hpp"
@@ -159,35 +157,59 @@ SortJunction(int Ep, int I, int C, int K, const SimulationState& S, const Geomet
 {
     // BASIC: I$ = "E" or "J"
     char Is = 'E';
+    int CO;
+    int CT;
+    int L1;
+    int L2;
+    int L3;
+    int L4;
 
     // Start with current at I (BASIC CR(I),CI(I))
     std::complex<double> IJu = S.CurrX[I];
 
-    // loop wires 1..NW
-    for (int J = 1; J <= g.NW; ++J)
+    if (!((C == K) || (C == 0)))
     {
-        if (J == K) continue;
-
-        int L1 = g.Na[J][1];
-        int L2 = g.Na[J][2];
-
-        int CO = (Ep == 2) ? g.Cp[L2][2] : g.Cp[L1][1];
-        int CT = (Ep == 2) ? g.Cp[L1][1] : g.Cp[L2][2];
-
-        if (CO == -K) {
-            IJu -= S.CurrX[(Ep == 2) ? L2 : L1];
-            Is = 'J';
-        }
-        if (CT == K) {
-            IJu += S.CurrX[(Ep == 2) ? L1 : L2];
-            Is = 'J';
-        }
-    }
-
-    // if C != K, this is a junction
-    if (!(C == K || C == 0))
         Is = 'J';
+        IJu = S.CurrX[I];
+    }
+    // 579 REM ----- CHECK FOR OTHER OVERLAPPING WIRES
+    // loop wires 1..NW
+    for (int J = 1; J <= g.NW; ++J)     // 588
+    {
+        if (J == K) continue;           // 581
 
+        L1 = g.Na[J][1];            // 582
+        L2 = g.Na[J][2];            // 583
+
+        if (Ep == 2)                    // 584
+        {
+            CO = g.Cp[L2][2];       // 590
+            CT = g.Cp[L1][1];       // 591
+            L3 = L2;                // 592
+            L4 = L1;                // 593
+        }
+        else
+        {
+            CO = g.Cp[L1][1];       // 585
+            CT = g.Cp[L2][2];       // 586
+            L3 = L1;                // 587
+            L4 = L2;                // 588
+        }
+
+        if (CO == -K) {             // 594
+            IJu = IJu - S.CurrX[L3];// 596, 597
+            Is = 'J';               // 598
+        }
+        if (!(CT == K))             // 599
+        {
+            continue;               // 600
+        }
+        else
+        {
+            IJu = IJu + S.CurrX[L4];// 601, 602
+            Is = 'J';               // 603
+        }
+    }                               // 604
     return {IJu, Is};
 }
 
@@ -196,29 +218,11 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
     std::cout << "Entry of PrintCurrents" << std::endl;
 
     // BASIC line 497 compute impedances + currents
-    ImpedanceMatrixCalculation(S,g);
+    ImpedanceMatrixCalculation(S,g);    // 497
 
-    //std::vector<std::complex<double>> CurrX;
-    S.CurrX.resize(11);
+    char Sflag = 'N';                   // 498
 
-    // CurrX[1] = std::complex<double>(1.0, 2.0); // 1 + 2i
-
-    S.CurrX[0] =  std::complex<double>(0.0, 0.0);
-    S.CurrX[1] =  std::complex<double>(0.0010,  0.0015);
-    S.CurrX[2] =  std::complex<double>(0.0010, -0.0008);
-    S.CurrX[3] =  std::complex<double>(0.0009, -0.0022);
-    S.CurrX[4] =  std::complex<double>(0.0008, -0.0032);
-    S.CurrX[5] =  std::complex<double>(0.0006, -0.0039);
-    S.CurrX[6] =  std::complex<double>(0.0005, -0.0045);
-    S.CurrX[7] =  std::complex<double>(0.0004, -0.0045);
-    S.CurrX[8] =  std::complex<double>(0.0002, -0.0041);
-    S.CurrX[9] =  std::complex<double>(0.0001, -0.0032);
-    S.CurrX[10] = std::complex<double>(0.0000, -0.0019);
-
-    // BASIC line 498
-    char Sflag = 'N';
-
-    std::cout << "\n\n************ CURRENT DATA ************\n";
+    std::cout << "\n\n************ CURRENT DATA ************\n";    // 499, 500
 
     for (int K = 1; K <= g.NW; ++K)     // 501
     {
@@ -250,13 +254,9 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
 
             if (!(N1 == 0))                         // 522
             {
-                if (C == K)                         // 523
+                if (!(C == K))                         // 523
                 {
-                    // nothing
-                }
-                else if (Is == 'J')
-                {
-                    N1++;                           // 524
+                   if (Is == 'J') N1 = N1 +1;                           // 524
                 }
 
                 for (int seg = N1; seg <= N2 - 1; ++seg)        // 525
@@ -304,6 +304,6 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
         {
             PrintOutD(std::cout, N2, S.CurrX[N2]);
         }
-    }                                               // 555 (NEXT K)
+    }    // 555 (NEXT K)
     std::cout << "Exit of PrintCurrents" << std::endl;
 }

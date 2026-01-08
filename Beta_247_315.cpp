@@ -13,6 +13,8 @@ void Beta_247_315(
     double T7
     )
 {
+
+
     // 247 REM ----- COMPUTE PSI(M,N,N+1/2)
     S.P1 = 2 * g.Wp[S.I] + S.I - 1;     // 248
     S.P2 = 2 * g.Wp[S.J] + S.J - 1;     // 249
@@ -29,8 +31,8 @@ void Beta_247_315(
         T1, T2,
         g.Xa, g.Ya, g.Za,
         S.W,
-        g.A[J2],
-        g.Sa[J2]
+        g.A[S.P4],
+        g.Sa[S.P4]
         );
 
     double U1 = S.F5 * T1;                  // 253
@@ -50,8 +52,8 @@ void Beta_247_315(
             T1, T2,
             g.Xa, g.Ya, g.Za,
             S.W,
-            g.A[J2],
-            g.Sa[J2]
+            g.A[S.P4],
+            g.Sa[S.P4]
             );
     }
 
@@ -75,6 +77,8 @@ void Beta_247_315(
 
     // 271 REM ----- IMAGINARY PART OF VECTOR POTENTIAL CONTRIBUTION
     double D2 = S.W2 * (X3*T5 + Y3*T6 + Z3*T7);                         // 272
+
+
 
     Sub_273_312(
         S,

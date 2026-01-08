@@ -19,6 +19,11 @@ void Gosub102(
     // 100 REM ----- S(M) GOES IN (X1,Y1,Z1) FOR VECTOR POTENTIAL
     // 101 REM ----- MOD FOR SMALL RADIUS TO WAVE LENGTH RATIO
 
+    // if ((S.I == 5) && (S.J == 5))
+    // {
+    //     int q0 = 1;
+    // }
+
     int FVS = 0;            // 102
 
     if (S.K >= 1)           // 103
@@ -68,4 +73,6 @@ void Gosub102(
         T1,
         T2
         );
+
+    int q1 = 1;
 }
