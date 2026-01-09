@@ -132,17 +132,6 @@ void Sub_273_312(
         T2_local = U6;                          // 306
     }
 
-    // BASIC 311–312
-
-    // 310 REM ----- GRADIENT OF SCALAR POTENTIAL CONTRIBUTION
-    // double SaJ1 = SafeSa(Sa, J1);
-    // if (SaJ1 == 0.0)
-    // {
-    //     U1 = 0.0;
-    //     U2 = 0.0;
-    //     return;
-    // }
-
     U1 = U1 + (U3 - T1_local) / g.Sa[J1];       // 311
     U2 = U2 + (U4 - T2_local) / g.Sa[J1];       // 312
 }
