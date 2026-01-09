@@ -123,16 +123,16 @@ void ImpedanceMatrixCalculation(SimulationState& S, GeometryData g)
         } // Next J                             // 333
     } // Next I                                 // 336
 
-    for (int i = 1; i <= 10; ++i)
-    {
-        std::cout << "i = " << i << std::endl;
-        for (int j = 1; j <= 10; ++j)
-        {
-            std::cout << "j = " << j << "   "
-                      << std::scientific << std::setprecision(15) <<
-                S.ZR[i][j] << "    " << S.ZI[i][j] << std::endl;
-        }
-    }
+    // for (int i = 1; i <= 10; ++i)
+    // {
+    //     std::cout << "i = " << i << std::endl;
+    //     for (int j = 1; j <= 10; ++j)
+    //     {
+    //         std::cout << "j = " << j << "   "
+    //                   << std::scientific << std::setprecision(15) <<
+    //             S.ZR[i][j] << "    " << S.ZI[i][j] << std::endl;
+    //     }
+    // }
 
 
     // AdditionOfLoads()

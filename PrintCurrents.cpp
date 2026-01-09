@@ -122,41 +122,44 @@ void PrintCurrents(SimulationState& S)
 }
 */
 
-#include "PrintCurrents.hpp"
-// #include "ImpedanceMatrixCalculation.hpp"
-#include "SimulationState.hpp"
-#include <iostream>
-// #include <iomanip>
-// #include <cmath>
-// #include <string>
-
 // // helper = direct BASIC ports
 static void PrintOutD(std::ostream& os, int idx, std::complex<double> I)
 {
     os << std::setw(4) << idx
        << std::setw(15) << std::scientific << I.real()
        << std::setw(15) << I.imag()
-       << std::setw(15) << std::abs(I)
+       << std::setw(15) << std::abs(I) << "  " << std::fixed
        << std::setw(12) << (std::arg(I) * 180.0 / M_PI)
        << "\n";
 }
 
 static void PrintOutS(std::ostream& os, char tag, std::complex<double> I)
 {
-    os << "  " << tag
+    os << "   " << tag
        << std::setw(15) << std::scientific << I.real()
        << std::setw(15) << I.imag()
-       << std::setw(15) << std::abs(I)
+       << std::setw(15) << std::abs(I) << "  " << std::fixed
        << std::setw(12) << (std::arg(I) * 180.0 / M_PI)
        << "\n";
 }
 
+
+static void fAlfa_2( int j1aK, int N2, std::complex<double> Cx,std::complex<double>IJu, char Is)
+{
+    //global J1a dForm cForm fidPsi
+    // PrintOutD(std::cout, seg, S.CurrX[seg]);
+
+    PrintOutD(std::cout, N2, Cx);
+    if (!(j1aK == 1)) PrintOutS(std::cout, Is, IJu);
+}
+
 // // 572 / 607 logic collapsed into helper
-static std::pair<std::complex<double>, char>
-SortJunction(int Ep, int I, int C, int K, const SimulationState& S, const GeometryData g)
+//static std::pair<std::complex<double>, char>
+void SortJunction(int Ep, int I, int C, int K, const SimulationState& S, const GeometryData g,
+             std::complex<double>& IJu, char& Is)
 {
     // BASIC: I$ = "E" or "J"
-    char Is = 'E';
+    Is = 'E';
     int CO;
     int CT;
     int L1;
@@ -165,7 +168,7 @@ SortJunction(int Ep, int I, int C, int K, const SimulationState& S, const Geomet
     int L4;
 
     // Start with current at I (BASIC CR(I),CI(I))
-    std::complex<double> IJu = S.CurrX[I];
+    IJu = std::complex<double> (0.0,0.0);
 
     if (!((C == K) || (C == 0)))
     {
@@ -210,12 +213,15 @@ SortJunction(int Ep, int I, int C, int K, const SimulationState& S, const Geomet
             Is = 'J';               // 603
         }
     }                               // 604
-    return {IJu, Is};
+    //return {IJu, Is};
 }
 
 void PrintCurrents(SimulationState& S, const GeometryData g)
 {
     std::cout << "Entry of PrintCurrents" << std::endl;
+
+    std::complex<double>Iju;
+    char Is;
 
     // BASIC line 497 compute impedances + currents
     ImpedanceMatrixCalculation(S,g);    // 497
@@ -248,7 +254,7 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
         if (!(g.J1a[K] == -1) || S.G == 1)
         {
             int Ep = 1;                             // 515
-            auto [Iju, Is] = SortJunction(Ep, I, C, K, S, g);   // 516
+            SortJunction(Ep, I, C, K, S, g, Iju, Is);   // 516
 
             PrintOutS(std::cout, Is, Iju);
 
@@ -256,7 +262,7 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
             {
                 if (!(C == K))                         // 523
                 {
-                   if (Is == 'J') N1 = N1 +1;                           // 524
+                    if (Is == 'J') N1 = N1 +1;                           // 524
                 }
 
                 for (int seg = N1; seg <= N2 - 1; ++seg)        // 525
@@ -276,7 +282,7 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
         if (S.G == 1 || !(g.J1a[K] == 1))           // 535 & 536
         {
             int Ep = 2;                             // 537
-            auto [Iju, Is] = SortJunction(Ep, I, C, K, S, g);   // 538
+            SortJunction(Ep, I, C, K, S, g, Iju, Is);   // 538
 
             if ((N1 == 0 && N2 == 0) || (N1 > N2))  // 539 & 540
             {
@@ -286,24 +292,36 @@ void PrintCurrents(SimulationState& S, const GeometryData g)
             {
                 if (C == K)                         // 541
                 {
-                    PrintOutD(std::cout, N2, S.CurrX[N2]);
-                    PrintOutS(std::cout, Is, Iju);
-                }
-                else if (Is == 'J')                 // 542
-                {
-                    PrintOutS(std::cout, Is, Iju);  // 551
+                    fAlfa_2(g.J1a[K], N2, S.CurrX[N2], Iju, Is); //
                 }
                 else
                 {
-                    PrintOutD(std::cout, N2, S.CurrX[N2]);
-                    PrintOutS(std::cout, Is, Iju);
+                    if (Is == 'J')      // 542
+                    {
+                        PrintOutS(std::cout, Is, Iju);  // 551
+                    }
+                    else
+                    {
+                        fAlfa_2(g.J1a[K], N2, S.CurrX[N2], Iju, Is);
+                    }
+
                 }
             }
         }
-        else
+        else if (g.J1a[K] == 1)
         {
-            PrintOutD(std::cout, N2, S.CurrX[N2]);
+            fAlfa_2(g.J1a[K], N2, S.CurrX[N2], Iju, Is);
         }
-    }    // 555 (NEXT K)
+
+    }  // 555 (NEXT K)
+
+
+    // else
+    // {
+    //     PrintOutD(std::cout, N2, S.CurrX[N2]);
+    // }
+
     std::cout << "Exit of PrintCurrents" << std::endl;
 }
+
+
