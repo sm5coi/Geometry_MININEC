@@ -7,8 +7,6 @@
 #include "ExcitationInput.hpp"
 #include "SimulationState.hpp"
 
-//int FLG;  // global (as in MATLAB)
-
 // === Helper function: ReadInfile ===
 void ReadInfile(std::ifstream &fid,
                 int &S1,

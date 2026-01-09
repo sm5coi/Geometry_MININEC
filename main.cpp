@@ -17,11 +17,6 @@ std::ofstream fidGau;
 std::ofstream fidZRZI;
 
 // ===== PLACEHOLDER FUNCTIONS =====
-// (These must be implemented separately later)
-
-// void FrequencyInput() {
-//     // TODO: Implement
-// }
 
 int EnvironmentInput() {
     // TODO: Implement

@@ -106,13 +106,10 @@ void Gosub135(
                    TT, W, SRM, I6u, Ap4,
                    T3, T4);
 
-
-
         TT = (0.5 - Q[L]) / F2;                 // 172
         KernelEval(S, X2, Y2, Z2, V1, V2, V3,   // 173
                    TT, W, SRM, I6u, Ap4,
                    T3, T4);
-
 
         L++;                // 174
         T1 += Q[L] * T3;    // 175

@@ -85,25 +85,10 @@ void MatSolve(SimulationState& S, GeometryData g)
     //std::vector<std::complex<double>> CurrX;
     S.CurrX.resize(g.N + 1);
 
-    // CurrX[1] = std::complex<double>(1.0, 2.0); // 1 + 2i
-
-    // S.CurrX[0] =  std::complex<double>(0.0, 0.0);
-    // S.CurrX[1] =  std::complex<double>(0.0010,  0.0015);
-    // S.CurrX[2] =  std::complex<double>(0.0010, -0.0008);
-    // S.CurrX[3] =  std::complex<double>(0.0009, -0.0022);
-    // S.CurrX[4] =  std::complex<double>(0.0008, -0.0032);
-    // S.CurrX[5] =  std::complex<double>(0.0006, -0.0039);
-    // S.CurrX[6] =  std::complex<double>(0.0005, -0.0045);
-    // S.CurrX[7] =  std::complex<double>(0.0004, -0.0045);
-    // S.CurrX[8] =  std::complex<double>(0.0002, -0.0041);
-    // S.CurrX[9] =  std::complex<double>(0.0001, -0.0032);
-    // S.CurrX[10] = std::complex<double>(0.0000, -0.0019);
-
     for (int i = 1; i <= g.N; ++i)
     {
         S.CurrX[i] = std::complex<double>(S.CR[i], S.CI[i]);
     }
-
 
     S.FLG = 2; //   475 FLG = 2
 }

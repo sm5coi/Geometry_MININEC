@@ -53,8 +53,6 @@ void ImpedanceMatrixCalculation(SimulationState& S, GeometryData g)
                 int q0 = 1;
             }
 
-
-
             int J1 = std::abs(g.Cp[S.J][1]);            // 223
             int J2 = std::abs(g.Cp[S.J][2]);            // 224
             S.F4 = (int) copysign(1, g.Cp[S.J][1]);   // 225
